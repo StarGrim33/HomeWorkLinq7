@@ -24,12 +24,18 @@ namespace HomeWorkLinq7
 
         public void JoinCollections()
         {
-            var unitedCollection = _firstSquad.Where(soldier => soldier.Name.StartsWith("Б")).Union(_secondSquad).OrderBy(soldier => soldier.Name).ToList();
-            ShowCollection(unitedCollection);
+            var soldiers = _firstSquad.Where(soldier => soldier.Name.StartsWith("Б"));
+            _secondSquad = _secondSquad.Union(soldiers).OrderBy(soldier => soldier.Name).ToList();
+            _firstSquad = _firstSquad.Except(soldiers).ToList();
+
+            ShowCollection(_firstSquad);
+            ShowCollection(_secondSquad);
         }
 
         private void ShowCollection(List<Soldier> soldiers)
         {
+            Console.WriteLine($"{new string('*', 25)}");
+
             foreach(Soldier soldier in soldiers)
             {
                 Console.WriteLine($"{soldier.Name}");
